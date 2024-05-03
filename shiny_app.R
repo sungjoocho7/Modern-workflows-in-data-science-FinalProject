@@ -16,52 +16,9 @@ evs <- readRDS("data/evs.rds")
 # Functions --------------------------------------------------------
 
 
-# function for graph (country, 3 graphs, input: outcome variable)
+# function for graph
 
-# 1. Plot for Female
-FemalePlot <- function(data, y_var){
-  
-  # filter female data
-  data_female <- data %>%
-    filter(sex == "Female") %>%
-    na.omit()
-  
-  # plot
-  plot <- data_female %>%
-    ggplot(aes(x = age, y = {{y_var}}, color = edu)) +
-    stat_summary(geom = "line", fun = "mean") +
-    labs(title = "Average disagreement of job_national by age (Female)",
-         x = "Age",
-         y = "Average Disagreement") 
-    
-  return(plot)
-}
-
-FemalePlot(evs, child_suffer)
-
-
-# 2. Plot for Male
-MalePlot <- function(data, y_var){
-  
-  # filter female data
-  data_female <- data %>%
-    filter(sex == "Male") %>%
-    na.omit()
-  
-  # plot
-  plot <- data_female %>%
-    ggplot(aes(x = age, y = {{y_var}}, color = edu)) +
-    stat_summary(geom = "line", fun = "mean") +
-    labs(title = "Average disagreement of job_national by age (Female)",
-         x = "Age",
-         y = "Average Disagreement") 
-  
-  return(plot)
-}
-
-
-
-# 3. Plot
+# Plot
 ExplorationPlot <- function(data, y_var){
   
   # filter data
@@ -78,10 +35,6 @@ ExplorationPlot <- function(data, y_var){
   
   return(plot)
 }
-
-
-ExplorationPlot(evs, "child_suffer")
-
 
 
 # function for the regression model
@@ -107,8 +60,6 @@ RegTable <- function(data, y_var, age_poly = 1, sex = FALSE, edu = FALSE) {
   reg_model <- lm(reg_formula, data = data)
   as.data.frame((tidy(reg_model)))
 }
-
-RegTable(evs, "child_suffer", age_poly = 2, sex=TRUE, edu=FALSE)
 
 
 
@@ -146,14 +97,6 @@ RegScatterPlot <- function(data, y_var, age_poly = 1, sex = FALSE, edu = FALSE) 
          title = "Scatter Plot of Predicted vs. Residuals")
 }
 
-RegScatterPlot(evs, "job_national", age_poly = 1, sex=TRUE, edu=TRUE)
-
-
-mod <- lm(child_suffer ~ age + age^2 + sex, data = evs)
-summary(mod)
-res <- resid(mod)
-plot(fitted(mod), res)
-
 
 
 
@@ -189,7 +132,7 @@ ui <- dashboardPage(
     selectInput("country", 
                 "Country:", 
                 choices = c("Overall", cntrys),
-                selected = "overall"),
+                selected = "Overall"),
     
     radioButtons("outcome", 
                  "Outcome variable:",
@@ -204,12 +147,12 @@ ui <- dashboardPage(
     sliderInput("polynomial",
                 "Age polynomial:",
                 value = 1, min = 1, max = 5),
-
+    
     
     
     # download
     downloadButton("report", "Generate report")
-    ),
+  ),
   
   
   
@@ -231,7 +174,7 @@ ui <- dashboardPage(
           style = "font-size: 18px; list-style-type: disc",
           tags$li("The 'Exploration' section provides a graph describing the selected outcome variable with three predictors age, education, and sex."),
           tags$li("The 'Regression' section provides a table showing the regression coefficients and a scatter plot illustrating the predicted versus the residuals from the regression model. By default, age is the main predictor. Users can choose additional predictors (sex and education), and also adjust the polynomial value of age from 1 to 5 in the sidebar menu.")
-          )
+        )
       ),
       
       
@@ -263,19 +206,20 @@ ui <- dashboardPage(
       )
     )
   )
-  )
+)
 
 
 server <- function(input, output, session) {
   
   # make a country data
   data <- reactive({
-    if (input$country == "overall") {
+    if (input$country == "Overall") {
       return(evs)
     } else {
       return(evs[evs$cntry == input$country, ])
     }
   })
+  
   
   # selected country
   output$selected_country_exploration <- renderText({input$country})
@@ -294,7 +238,7 @@ server <- function(input, output, session) {
   output$regression_plot_description <- renderText({
     paste0("The scatter plot showing the predicted versus the residuals from the regression model for ", input$outcome, ":")
   })
-
+  
   
   # ExplorationPlot (Second section)
   output$exploration_plot <- renderPlotly({
@@ -344,7 +288,9 @@ server <- function(input, output, session) {
   
   # download
   output$report <- downloadHandler(
-    filename = ("evs_report.html"),
+    filename = function() {
+      paste0("evs_report_", input$country, ".html")
+    },
     
     content = function(file) {
       tempReport <- file.path("report.Rmd")
@@ -367,4 +313,3 @@ server <- function(input, output, session) {
 }
 
 shinyApp(ui, server) 
-
