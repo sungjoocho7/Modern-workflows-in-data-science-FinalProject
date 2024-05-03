@@ -1,0 +1,12 @@
+name: evs_app
+title: evs_app
+username: scho77
+account: scho77
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 11925917
+bundleId: 8571212
+url: https://scho77.shinyapps.io/evs_app/
+version: 1
+asMultiple: FALSE
+asStatic: FALSE

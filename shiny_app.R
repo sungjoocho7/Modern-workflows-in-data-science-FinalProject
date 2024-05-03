@@ -29,7 +29,7 @@ ExplorationPlot <- function(data, y_var){
   plot <- data %>%
     ggplot(aes(x = age, y = !!as.name(y_var), color = interaction(edu, sex))) +  
     stat_summary(geom = "line", fun = "mean") +
-    labs(title = "Average disagreement of job_national by age",
+    labs(title = "Average disagreement level",
          x = "Age",
          y = "Average Disagreement") 
   
@@ -151,7 +151,10 @@ ui <- dashboardPage(
     
     
     # download
-    downloadButton("report", "Generate report")
+    div(
+      style = "display: flex; justify-content: center; align-items: center; height: 100%;",
+      downloadButton("report", "Generate report")
+    )
   ),
   
   

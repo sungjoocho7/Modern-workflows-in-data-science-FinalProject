@@ -22,10 +22,11 @@ Original datasets are data/ZA7500_v5-0-0.sav, and the cleaned data evs.rds was u
 
 This repository is organized as follows:
 
--   **/data** - Contains both the raw data and edited data set used in the analysis as well as codebook of the EVS data set.
--   **/script** - Contains a [R script]() for data cleaning and another [R script]() to run the shiny app.
+-   **/data** - Contains both the [raw data](https://github.com/sungjoocho7/Modern-workflows-in-data-science-FinalProject/blob/fea80922d6e1cbe2dd144fbbf41fe145b83548a4/data/ZA7500_v5-0-0.sav) and [edited data](https://github.com/sungjoocho7/Modern-workflows-in-data-science-FinalProject/blob/fea80922d6e1cbe2dd144fbbf41fe145b83548a4/data/evs.rds) set used in the analysis as well as [codebook](https://github.com/sungjoocho7/Modern-workflows-in-data-science-FinalProject/blob/fea80922d6e1cbe2dd144fbbf41fe145b83548a4/data/ZA7500_cdb.pdf) of the EVS data set.
+-   **/script** - Contains a [R script](https://github.com/sungjoocho7/Modern-workflows-in-data-science-FinalProject/blob/fea80922d6e1cbe2dd144fbbf41fe145b83548a4/script/cleaning_evs.R) for data cleaning and another [R script]() to run the shiny app.
 -   **/report** - Contains a markdown file to generate an HTML report as well as a sample HTML report with the overall sample data. 
 -   **/documentation** - Contains the instructional document.
+-   **/figs** - Contains screenshots of the application pages.
 
 
 
@@ -41,14 +42,15 @@ The application is structured around four main tabs: Overview, Exploration, and 
 
 An HTML report containing the information from the app can be saved by clicking 'Generate report' button in the sidebar.
 
-![](figs/overview.jpg) *Figure 1*
+![](figs/overall.jpg) *Figure 1*
 
-![](figs/democracy.jpg) *Figure 2*
+![](figs/graph.jpg) *Figure 2*
 
 
 
 #### URL to the application:
 
+https://scho77.shinyapps.io/evs_app/
 
 
 
