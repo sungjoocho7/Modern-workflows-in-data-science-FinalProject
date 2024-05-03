@@ -166,7 +166,7 @@ ui <- dashboardPage(
         tabName = "Overview",
         h2("Overview of the Application"),
         h3("Introduction"),
-        h4("This application is designed to analyze data sourced from the European Value Study (EVS). Users can explore attitudes towards gender roles and immigration. Analysis of the overall data with the entire sample, as well as on a country-by-country basis, is available by using the country drop-down menu located in the sidebar"),
+        h4("This application is designed to analyze data sourced from the European Value Study (EVS). Users can explore attitudes towards gender roles and immigration. Analysis of the overall data with the entire sample, as well as on a country-by-country basis, is available by using the country drop-down menu located in the sidebar."),
         
         h3("Section Information"),
         h4("The application is structured around four main tabs: Overview, Exploration, and Regression. These tabs are easily accessible through the sidebar menu. Users can choose the outcome variable in the sidebar menu under the 'Outcome variable' section."),
@@ -174,7 +174,9 @@ ui <- dashboardPage(
           style = "font-size: 18px; list-style-type: disc",
           tags$li("The 'Exploration' section provides a graph describing the selected outcome variable with three predictors age, education, and sex."),
           tags$li("The 'Regression' section provides a table showing the regression coefficients and a scatter plot illustrating the predicted versus the residuals from the regression model. By default, age is the main predictor. Users can choose additional predictors (sex and education), and also adjust the polynomial value of age from 1 to 5 in the sidebar menu.")
-        )
+        ),
+        
+        h4("An HTML report containing the information from the app can be saved by clicking 'Generate report' button in the sidebar.")
       ),
       
       
