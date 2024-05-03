@@ -342,7 +342,7 @@ server <- function(input, output, session) {
   
   # download
   output$report <- downloadHandler(
-    filename = paste0("evs_report.html"),
+    filename = ("evs_report.html"),
     
     content = function(file) {
       tempReport <- file.path("report.Rmd")
@@ -362,8 +362,6 @@ server <- function(input, output, session) {
                         envir = new.env(parent = globalenv()))
     }
   )
-  
-  
 }
 
 shinyApp(ui, server) 

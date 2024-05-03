@@ -25,6 +25,7 @@ library(shinydashboard)
 library(haven)
 library(DT) 
 library(knitr)
+library(texreg)
 ```
 
 
@@ -85,7 +86,7 @@ ExplorationPlot <- function(data, y_var){
          x = "Age",
          y = "Average Disagreement") 
   
-  return(plot)
+  ggplotly(plot)
 }
 ```
 
@@ -98,9 +99,9 @@ ExplorationPlot(data, params$outcome)
 
 ## `r params$country`
 
-### Below is the table showing the regression coefficients for `r params$outcome`.
+Below is the table showing the regression coefficients for `r params$outcome`.
 
-```{r echo=FALSE, results='asis'}
+```{r echo=FALSE}
  # age and edu arguments
 if ("sex" %in% params$controls) {
   s <- TRUE
@@ -134,8 +135,8 @@ RegTable <- function(data, y_var, age_poly = 1, sex = FALSE, edu = FALSE) {
   
   # regression model
   reg_model <- lm(reg_formula, data = data)
-  htmlreg(reg_model,
-          caption = "Outputs from the Regression Model", type = "html")
+  reg_model_table <- as.data.frame((tidy(reg_model)))
+  datatable(reg_model_table)
 }
 ```
 
@@ -143,7 +144,7 @@ RegTable <- function(data, y_var, age_poly = 1, sex = FALSE, edu = FALSE) {
 RegTable(data, params$outcome, params$polynomial, s, e)
 ```
 
-### Below is the scatter plot showing the predicted versus the residuals from the regression model for `r params$outcome`.
+Below is the scatter plot showing the predicted versus the residuals from the regression model for `r params$outcome`.
 
 ```{r include=FALSE}
 # 2. Regression model scatter plot
@@ -174,10 +175,12 @@ RegScatterPlot <- function(data, y_var, age_poly = 1, sex = FALSE, edu = FALSE) 
   plot_data <- data.frame(Predicted = predicted, Residuals = residuals)
   
   # Create a scatter plot using ggplot
-  ggplot(plot_data, aes(x = Predicted, y = Residuals)) +
+  scatter_plot <- ggplot(plot_data, aes(x = Predicted, y = Residuals)) +
     geom_point() +
     labs(x = "Predicted Values", y = "Residuals",
          title = "Scatter Plot of Predicted vs. Residuals")
+  
+  ggplotly(scatter_plot)
 }
 ```
 
