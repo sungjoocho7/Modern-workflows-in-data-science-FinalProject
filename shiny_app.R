@@ -105,7 +105,7 @@ RegTable <- function(data, y_var, age_poly = 1, sex = FALSE, edu = FALSE) {
   
   # regression model
   reg_model <- lm(reg_formula, data = data)
-  as.data.frame(tidy(reg_model))
+  as.data.frame((tidy(reg_model)))
 }
 
 RegTable(evs, "child_suffer", age_poly = 2, sex=TRUE, edu=FALSE)
@@ -202,8 +202,14 @@ ui <- dashboardPage(
       menuItem("Overview", tabName = "Overview", icon = icon("dashboard")),
       menuItem("Exploration", tabName = "Exploration", icon = icon("chart-simple")),
       menuItem("Regression", tabName = "Regression", icon = icon("database"))
-      )
+      ),
+    
+    
+    # download
+    downloadButton("report", "Generate report")
     ),
+  
+  
   
   ## Dashboard Body ##
   dashboardBody(
@@ -331,6 +337,33 @@ server <- function(input, output, session) {
     }
     RegScatterPlot(data(), input$outcome, input$polynomial, s, e)
   })
+  
+  
+  
+  # download
+  output$report <- downloadHandler(
+    filename = paste0("evs_report.html"),
+    
+    content = function(file) {
+      tempReport <- file.path("report.Rmd")
+      file.copy(tempReport, file, overwrite = TRUE)
+      
+      # set up parameters to pass to Rmd document
+      params <- list(
+        country = input$country,
+        outcome = input$outcome,
+        controls = input$controls,
+        polynomial = input$polynomial
+      )
+      
+      # knit the document, passing in the 'params' list
+      rmarkdown::render(tempReport, output_file = file,
+                        params = params,
+                        envir = new.env(parent = globalenv()))
+    }
+  )
+  
+  
 }
 
 shinyApp(ui, server) 

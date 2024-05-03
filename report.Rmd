@@ -1,0 +1,187 @@
+---
+title: "European Value Study (EVS)"
+author: "Sungjoo Cho"
+date: "`r Sys.Date()`"
+output: html_document
+params:
+  country: "overall"
+  outcome: "child_suffer"
+  controls: c("sex")
+  polynomial: 1
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r message=FALSE, warning=FALSE, include=FALSE}
+# Libaray
+library(broom)
+library(shiny)
+library(tidyverse)
+library(ggplot2)
+library(plotly)
+library(shinydashboard)
+library(haven)
+library(DT) 
+library(knitr)
+```
+
+
+# Overview
+
+## Overview of the Application
+
+
+### Introduction
+
+This application is designed to analyze data sourced from the European Value Study (EVS). The original data can be found [here](https://search.gesis.org/research_data/ZA7500). Users can explore attitudes towards gender roles and immigration. Key variables analyzed include v72 and v80, which respectively measure perceptions on maternal employment effects and job priority during scarcity. Analysis of the overall data with the entire sample, as well as on a country-by-country basis, is available by using the country drop-down menu located in the sidebar.
+
+-   **v72** - Child suffers with working mother
+    -   Question: When a mother works for pay, the children suffer
+    -   Scale: 1 (Strongly agree) to 4 (Strongly disagree)
+-   **v80** - Jobs are scarce:giving...(nation)priority
+    -   Question: When jobs are scarce, employers should give priority to [Nationality] people over immigrants"
+    -   Scale: 1 (Strongly agree) to 4 (Strongly disagree)
+
+
+### Section Information
+
+The application is structured around four main tabs: Overview, Exploration, and Regression. These tabs are easily accessible through the sidebar menu. Users can choose the outcome variable in the sidebar menu under the 'Outcome variable' section.
+
+* The 'Exploration' section provides a graph describing the selected outcome variable with three predictors age, education, and sex.
+
+* The 'Regression' section provides a table showing the regression coefficients and a scatter plot illustrating the predicted versus the residuals from the regression model. By default, age is the main predictor. Users can choose additional predictors (sex and education), and also adjust the polynomial value of age from 1 to 5 in the sidebar menu.
+
+
+# Exploration
+
+## `r params$country`
+
+### Below is the graph for `r params$output` and the three controls: age, education, and sex.
+
+```{r message=FALSE, warning=FALSE, include=FALSE}
+# import data
+evs <- readRDS("data/evs.rds")
+
+data <- evs
+if (params$country != "overall") {
+  data <- evs[evs$cntry == params$country, ]
+}
+```
+
+```{r message=FALSE, warning=FALSE, include=FALSE}
+ExplorationPlot <- function(data, y_var){
+  
+  # filter data
+  data <- data %>%
+    na.omit()
+  
+  # plot
+  plot <- data %>%
+    ggplot(aes(x = age, y = !!as.name(y_var), color = interaction(edu, sex))) +  
+    stat_summary(geom = "line", fun = "mean") +
+    labs(title = "Average disagreement of job_national by age",
+         x = "Age",
+         y = "Average Disagreement") 
+  
+  return(plot)
+}
+```
+
+```{r echo=FALSE}
+ExplorationPlot(data, params$outcome)
+```
+
+
+# Regression
+
+## `r params$country`
+
+### Below is the table showing the regression coefficients for `r params$outcome`.
+
+```{r echo=FALSE, results='asis'}
+ # age and edu arguments
+if ("sex" %in% params$controls) {
+  s <- TRUE
+} else {
+  s <- FALSE
+}
+    
+if ("edu" %in% params$controls) {
+  e <- TRUE
+} else {
+  e <- FALSE
+}
+
+
+# 1. Regression model table
+RegTable <- function(data, y_var, age_poly = 1, sex = FALSE, edu = FALSE) {
+  
+  data <- data %>%
+    na.omit()
+  
+  # regression formula
+  reg_formula <- paste0(y_var, " ~ poly(age, ", age_poly, ", raw =TRUE)")
+  
+  if (sex) {
+    reg_formula <- paste0(reg_formula, " + sex")
+  }
+  
+  if (edu) {
+    reg_formula <- paste0(reg_formula, " + edu")
+  }
+  
+  # regression model
+  reg_model <- lm(reg_formula, data = data)
+  htmlreg(reg_model,
+          caption = "Outputs from the Regression Model", type = "html")
+}
+```
+
+```{r echo=FALSE}
+RegTable(data, params$outcome, params$polynomial, s, e)
+```
+
+### Below is the scatter plot showing the predicted versus the residuals from the regression model for `r params$outcome`.
+
+```{r include=FALSE}
+# 2. Regression model scatter plot
+RegScatterPlot <- function(data, y_var, age_poly = 1, sex = FALSE, edu = FALSE) {
+  
+  data <- data %>%
+    na.omit()
+  
+  # regression formula
+  reg_formula <- paste0(y_var, " ~ poly(age, ", age_poly, ", raw =TRUE)")
+  
+  if (sex) {
+    reg_formula <- paste0(reg_formula, " + sex")
+  }
+  
+  if (edu) {
+    reg_formula <- paste0(reg_formula, " + edu")
+  }
+  
+  # regression model
+  reg_model <- lm(reg_formula, data = data)
+  
+  # Obtain the residuals and predicted values
+  residuals <- residuals(reg_model)
+  predicted <- fitted(reg_model)
+  
+  # Create a data frame with predicted and residuals
+  plot_data <- data.frame(Predicted = predicted, Residuals = residuals)
+  
+  # Create a scatter plot using ggplot
+  ggplot(plot_data, aes(x = Predicted, y = Residuals)) +
+    geom_point() +
+    labs(x = "Predicted Values", y = "Residuals",
+         title = "Scatter Plot of Predicted vs. Residuals")
+}
+```
+
+```{r echo=FALSE}
+RegScatterPlot(data, params$outcome, params$polynomial, s, e)
+```
+
