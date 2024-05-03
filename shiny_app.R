@@ -188,7 +188,7 @@ ui <- dashboardPage(
     # input
     selectInput("country", 
                 "Country:", 
-                choices = c("overall", cntrys),
+                choices = c("Overall", cntrys),
                 selected = "overall"),
     
     radioButtons("outcome", 
