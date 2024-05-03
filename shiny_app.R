@@ -177,6 +177,14 @@ ui <- dashboardPage(
   ## Sidebar ##
   dashboardSidebar(
     
+    # sidebar menu
+    sidebarMenu(
+      menuItem("Overview", tabName = "Overview", icon = icon("dashboard")),
+      menuItem("Exploration", tabName = "Exploration", icon = icon("chart-simple")),
+      menuItem("Regression", tabName = "Regression", icon = icon("database"))
+    ),
+    
+    
     # input
     selectInput("country", 
                 "Country:", 
@@ -196,13 +204,7 @@ ui <- dashboardPage(
     sliderInput("polynomial",
                 "Age polynomial:",
                 value = 1, min = 1, max = 5),
-    
-    # sidebar menu
-    sidebarMenu(
-      menuItem("Overview", tabName = "Overview", icon = icon("dashboard")),
-      menuItem("Exploration", tabName = "Exploration", icon = icon("chart-simple")),
-      menuItem("Regression", tabName = "Regression", icon = icon("database"))
-      ),
+
     
     
     # download
