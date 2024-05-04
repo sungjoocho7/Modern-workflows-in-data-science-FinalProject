@@ -20,7 +20,7 @@ Original datasets are data/ZA7500_v5-0-0.sav, and the cleaned data evs.rds was u
     
 ## Organization of the repo
 
-A markdown file to generate an HTML report can be found in report.Rmd, and the R script to run the Shiny app can be found in shiny_app.R.
+A markdown file to generate an HTML report can be found in [report.Rmd](https://github.com/sungjoocho7/Modern-workflows-in-data-science-FinalProject/blob/724b9e9a5abd78ea1df0093e07c9ed5172a40f4b/report.Rmd), and the [R script](https://github.com/sungjoocho7/Modern-workflows-in-data-science-FinalProject/blob/724b9e9a5abd78ea1df0093e07c9ed5172a40f4b/shiny_app.R) to run the Shiny app can be found in shiny_app.R.
 
 
 This repository is organized as follows:
