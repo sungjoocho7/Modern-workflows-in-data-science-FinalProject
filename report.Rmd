@@ -4,7 +4,7 @@ author: "Sungjoo Cho"
 date: "`r Sys.Date()`"
 output: html_document
 params:
-  country: "overall"
+  country: "Overall"
   outcome: "child_suffer"
   controls: c("sex")
   polynomial: 1
@@ -57,7 +57,7 @@ Below is the graph for `r params$output` and the three controls: age, education,
 evs <- readRDS("data/evs.rds")
 
 data <- evs
-if (params$country != "overall") {
+if (params$country != "Overall") {
   data <- evs[evs$cntry == params$country, ]
 }
 ```

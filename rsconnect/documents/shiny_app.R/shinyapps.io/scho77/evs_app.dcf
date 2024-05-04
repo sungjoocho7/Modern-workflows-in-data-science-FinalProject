@@ -5,7 +5,7 @@ account: scho77
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 11925917
-bundleId: 8571212
+bundleId: 8574886
 url: https://scho77.shinyapps.io/evs_app/
 version: 1
 asMultiple: FALSE
