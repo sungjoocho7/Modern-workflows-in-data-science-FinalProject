@@ -15,17 +15,8 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ```{r message=FALSE, warning=FALSE, include=FALSE}
-# Libaray
-library(broom)
-library(shiny)
 library(tidyverse)
-library(ggplot2)
-library(plotly)
-library(shinydashboard)
 library(haven)
-library(DT) 
-library(knitr)
-library(texreg)
 ```
 
 
@@ -79,7 +70,7 @@ ExplorationPlot <- function(data, y_var){
          x = "Age",
          y = "Average Disagreement") 
   
-  ggplotly(plot)
+  plotly::ggplotly(plot)
 }
 ```
 
@@ -128,8 +119,8 @@ RegTable <- function(data, y_var, age_poly = 1, sex = FALSE, edu = FALSE) {
   
   # regression model
   reg_model <- lm(reg_formula, data = data)
-  reg_model_table <- as.data.frame((tidy(reg_model)))
-  datatable(reg_model_table)
+  reg_model_table <- as.data.frame((broom::tidy(reg_model)))
+  DT::datatable(reg_model_table)
 }
 ```
 
@@ -137,11 +128,12 @@ RegTable <- function(data, y_var, age_poly = 1, sex = FALSE, edu = FALSE) {
 RegTable(data, params$outcome, params$polynomial, s, e)
 ```
 
-Based on the regression model, it appears that as age increases, people are
+
 
 ### Residual Plot
 
 The plot presented below illustrates the predicted versus the residuals from the regression model for the `r params$outcome` outcome variable.
+
 
 ```{r include=FALSE}
 # 2. Regression model scatter plot
@@ -177,7 +169,7 @@ RegScatterPlot <- function(data, y_var, age_poly = 1, sex = FALSE, edu = FALSE) 
     labs(x = "Predicted Values", y = "Residuals",
          title = "Scatter Plot of Predicted vs. Residuals")
   
-  ggplotly(scatter_plot)
+  plotly::ggplotly(scatter_plot)
 }
 ```
 

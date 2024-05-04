@@ -179,7 +179,7 @@ ui <- dashboardPage(
           tags$li("The 'Regression' section provides a table showing the regression coefficients and a scatter plot illustrating the predicted versus the residuals from the regression model. By default, age is the main predictor. Users can choose additional predictors (sex and education), and also adjust the polynomial value of age from 1 to 5 in the sidebar menu.")
         ),
         
-        h4("An HTML report containing the information from the app can be saved by clicking 'Generate report' button in the sidebar.")
+        h4("An HTML report containing the information from the app can be saved by clicking 'Generate report' button in the sidebar. The overall report isn't accessible within the Shiny app due to an out-of-memory issue, but reports for other countries are available. To access the overall report, please download it directly from your local machine.")
       ),
       
       
