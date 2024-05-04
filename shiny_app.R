@@ -153,7 +153,7 @@ ui <- dashboardPage(
     # download
     div(
       style = "display: flex; justify-content: center; align-items: center; height: 100%;",
-      downloadButton("report", "Generate report")
+      downloadButton("report", "Generate report", style = "color: black;")
     )
   ),
   
