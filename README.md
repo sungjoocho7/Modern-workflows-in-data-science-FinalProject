@@ -53,7 +53,7 @@ An HTML report containing the information from the app can be saved by clicking 
 
 #### URL to the application:
 
-https://scho77.shinyapps.io/evs_app/
+https://scho77.shinyapps.io/EVS_application/
 
 
 
