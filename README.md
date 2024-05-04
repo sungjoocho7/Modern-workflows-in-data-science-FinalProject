@@ -20,11 +20,14 @@ Original datasets are data/ZA7500_v5-0-0.sav, and the cleaned data evs.rds was u
     
 ## Organization of the repo
 
+A markdown file to generate an HTML report can be found in report.Rmd, and the R script to run the Shiny app can be found in shiny_app.R.
+
+
 This repository is organized as follows:
 
 -   **/data** - Contains both the [raw data](https://github.com/sungjoocho7/Modern-workflows-in-data-science-FinalProject/blob/fea80922d6e1cbe2dd144fbbf41fe145b83548a4/data/ZA7500_v5-0-0.sav) and [edited data](https://github.com/sungjoocho7/Modern-workflows-in-data-science-FinalProject/blob/fea80922d6e1cbe2dd144fbbf41fe145b83548a4/data/evs.rds) set used in the analysis as well as [codebook](https://github.com/sungjoocho7/Modern-workflows-in-data-science-FinalProject/blob/fea80922d6e1cbe2dd144fbbf41fe145b83548a4/data/ZA7500_cdb.pdf) of the EVS data set.
--   **/script** - Contains a [R script](https://github.com/sungjoocho7/Modern-workflows-in-data-science-FinalProject/blob/fea80922d6e1cbe2dd144fbbf41fe145b83548a4/script/cleaning_evs.R) for data cleaning and another [R script]() to run the shiny app.
--   **/report** - Contains a markdown file to generate an HTML report as well as a sample HTML report with the overall sample data. 
+-   **/script** - Contains a [R script](https://github.com/sungjoocho7/Modern-workflows-in-data-science-FinalProject/blob/fea80922d6e1cbe2dd144fbbf41fe145b83548a4/script/cleaning_evs.R) for data cleaning.
+-   **/report** - Contains a sample HTML report with the overall sample data. 
 -   **/documentation** - Contains the instructional document.
 -   **/figs** - Contains screenshots of the application pages.
 

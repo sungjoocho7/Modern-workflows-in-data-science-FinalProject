@@ -56,9 +56,11 @@ Below is the graph for `r params$output` and the three controls: age, education,
 # import data
 evs <- readRDS("data/evs.rds")
 
-data <- evs
+# Modify data conditionally
 if (params$country != "Overall") {
   data <- evs[evs$cntry == params$country, ]
+} else {
+  data <- evs
 }
 ```
 
